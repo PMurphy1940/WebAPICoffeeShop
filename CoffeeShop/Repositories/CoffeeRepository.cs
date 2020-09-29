@@ -61,9 +61,58 @@ namespace CoffeeShop.Repositories
                         coffeeList.Add(aCoffee);
 
                     };
+                    reader.Close();
                     return coffeeList;
                 }
                     
+            }
+        }
+
+        public Coffee GetById(int id)
+        {
+            using(var conn = Connection)
+            {
+                conn.Open();
+                using(var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                                            SELECT  c.Id, 
+                                                    c.Title, 
+                                                    c.BeanVarietyId, 
+                                                    b.[Name], 
+                                                    b.Notes, 
+                                                    b.Region 
+                                                FROM Coffee c
+                                              LEFT JOIN BeanVariety b on b.Id = c.BeanVarietyId 
+                                            WHERE c.Id = @id
+                                        ";
+                    cmd.Parameters.AddWithValue("@id", id);
+                    var reader = cmd.ExecuteReader();
+
+                    Coffee aCoffee = null;
+
+                    if (reader.Read())
+                    {
+                         aCoffee = new Coffee()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Title = reader.GetString(reader.GetOrdinal("Title")),
+                            BeanVarietyId = reader.GetInt32(reader.GetOrdinal("BeanVarietyId")),
+                            BeanVariety = new BeanVariety
+                            {
+                                Name = reader.GetString(reader.GetOrdinal("[Name]")),
+                                Region = reader.GetString(reader.GetOrdinal("Notes")),
+                            }
+                        };
+                        if (!reader.IsDBNull(reader.GetOrdinal("Notes")))
+                        {
+                            aCoffee.BeanVariety.Notes = reader.GetString(reader.GetOrdinal("Notes"));
+                        }
+
+                    }
+                    reader.Close();
+                    return aCoffee;
+                }
             }
         }
     }

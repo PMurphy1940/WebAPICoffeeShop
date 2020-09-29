@@ -1,6 +1,11 @@
-﻿namespace CoffeeShop.Repositories
+﻿using CoffeeShop.Models;
+using System.Collections.Generic;
+
+namespace CoffeeShop.Repositories
 {
     public interface ICoffeeRepository
     {
+        List<Coffee> GetAll();
+        Coffee GetById(int id);
     }
 }
