@@ -1,13 +1,22 @@
-const url = "https://localhost:5001/api/beanvariety/";
+import beans from "./beans.js";
+
+const beanUrl = "https://localhost:5001/api/beanvariety/";
+const coffeeUrl = "https://localhost:5001/api/coffee/";
 
 const button = document.querySelector("#run-button");
 button.addEventListener("click", () => {
-    getAllBeanVarieties()
-        .then(beanVarieties => {
-            console.log(beanVarieties);
-        })
+  getAllBeanVarieties().then((beanVarieties) => {
+    beans.showAllBeans(beanVarieties);
+    // console.log(beanVarieties);
+  });
+  //     })
 });
 
 function getAllBeanVarieties() {
-    return fetch(url).then(resp => resp.json());
+  return fetch(beanUrl).then((resp) => resp.json());
 }
+
+const getAllCoffee = () => {
+  return fetch(coffeeUrl).then((response) => response.json());
+};
+

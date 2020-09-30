@@ -22,11 +22,11 @@ namespace CoffeeShop.Repositories
 
         public List<Coffee> GetAll()
         {
-            using(SqlConnection conn = Connection)
+            using (SqlConnection conn = Connection)
             {
                 conn.Open();
-                    using( var cmd = conn.CreateCommand())
-                    {
+                using (var cmd = conn.CreateCommand())
+                {
                     cmd.CommandText = @"
                                             SELECT  c.Id, 
                                                     c.Title, 
@@ -54,7 +54,7 @@ namespace CoffeeShop.Repositories
                                 Region = reader.GetString(reader.GetOrdinal("Notes")),
                             }
                         };
-                            if (!reader.IsDBNull(reader.GetOrdinal("Notes")))
+                        if (!reader.IsDBNull(reader.GetOrdinal("Notes")))
                         {
                             aCoffee.BeanVariety.Notes = reader.GetString(reader.GetOrdinal("Notes"));
                         }
@@ -64,16 +64,16 @@ namespace CoffeeShop.Repositories
                     reader.Close();
                     return coffeeList;
                 }
-                    
+
             }
         }
 
-        public Coffee GetById(int id)
+        public Coffee Get(int id)
         {
-            using(var conn = Connection)
+            using (var conn = Connection)
             {
                 conn.Open();
-                using(var cmd = conn.CreateCommand())
+                using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
                                             SELECT  c.Id, 
@@ -93,7 +93,7 @@ namespace CoffeeShop.Repositories
 
                     if (reader.Read())
                     {
-                         aCoffee = new Coffee()
+                        aCoffee = new Coffee()
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             Title = reader.GetString(reader.GetOrdinal("Title")),
@@ -112,6 +112,58 @@ namespace CoffeeShop.Repositories
                     }
                     reader.Close();
                     return aCoffee;
+                }
+            }
+        }
+        public void Add(Coffee coffee)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                                    INSERT INTO COFFEE (Title, BeanVarietyId)
+	                                    OUTPUT Inserted.Id
+	                                    VALUES (@title, @beanVarietyId)";
+                    cmd.Parameters.AddWithValue("@title", coffee.Title);
+                    cmd.Parameters.AddWithValue("@beanVarietyId", coffee.BeanVarietyId);
+                    coffee.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+        public void Update(Coffee coffee)
+        {
+            using(var conn = Connection)
+            {
+                conn.Open();
+                using(var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                                        UPDATE Coffee
+	                                        SET Title = @title,
+		                                        BeanVarietyId = @beanVarietyId
+		                                    WHERE Id = @Id";
+                    cmd.Parameters.AddWithValue("@title", coffee.Title);
+                    cmd.Parameters.AddWithValue("@beanVarietyId", coffee.BeanVarietyId);
+                    cmd.Parameters.AddWithValue("@Id", coffee.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        public void Delete(int id)
+        {
+            using(var conn = Connection)
+            {
+                conn.Open();
+                using(var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                                        DELETE FROM Coffee
+                                            WHERE Id = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
