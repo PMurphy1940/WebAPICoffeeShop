@@ -1,22 +1,15 @@
 import beans from "./beans.js";
+import CSApi from "./CoffeeShopAPI.js";
 
-const beanUrl = "https://localhost:5001/api/beanvariety/";
-const coffeeUrl = "https://localhost:5001/api/coffee/";
+const button = document.querySelector("#bean-button");
+const addBeanButton = document.querySelector("#new__Bean");
 
-const button = document.querySelector("#run-button");
 button.addEventListener("click", () => {
-  getAllBeanVarieties().then((beanVarieties) => {
+  CSApi.getAllBeanVarieties().then((beanVarieties) => {
     beans.showAllBeans(beanVarieties);
-
   });
-
 });
 
-function getAllBeanVarieties() {
-  return fetch(beanUrl).then((resp) => resp.json());
-}
-
-const getAllCoffee = () => {
-  return fetch(coffeeUrl).then((response) => response.json());
-};
-
+addBeanButton.addEventListener("click", () => {
+  beans.addNewBean();
+});

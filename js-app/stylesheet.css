@@ -1,10 +1,13 @@
-.bean__Container {
+.bean__Pic {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  background-size: cover;
+  background-color: turquoise;
 }
 
 .bean__Card {
+  background-image: url(coffeebeans.jpg);
   display: flex;
   width: 15rem;
   height: 20rem;
