@@ -7,9 +7,9 @@ const button = document.querySelector("#run-button");
 button.addEventListener("click", () => {
   getAllBeanVarieties().then((beanVarieties) => {
     beans.showAllBeans(beanVarieties);
-    // console.log(beanVarieties);
+
   });
-  //     })
+
 });
 
 function getAllBeanVarieties() {

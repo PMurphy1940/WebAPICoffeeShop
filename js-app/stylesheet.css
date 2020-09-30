@@ -1,0 +1,38 @@
+.bean__Container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.bean__Card {
+  display: flex;
+  width: 15rem;
+  height: 20rem;
+  flex-direction: column;
+  align-items: center;
+  background-color: #785510a4;
+  border-radius: 76px 0px 77px 0px;
+  box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+  margin: 2vw;
+}
+
+.card__Center {
+  color: white;
+  width: 60%;
+  border-radius: 4px;
+  text-align: right;
+  padding: 0.2rem;
+}
+.region {
+  width: 80%;
+  background-color: white;
+  text-align: center;
+  padding: 0.2rem;
+}
+
+.notes {
+  width: 80%;
+  background-color: white;
+  text-align: center;
+  padding: 0.2rem;
+}
